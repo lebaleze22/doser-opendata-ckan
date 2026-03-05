@@ -1,0 +1,45 @@
+{% set title = package.title or package.name %}
+{% set notes = h.markdown_extract(package.notes, extract_length=220) %}
+{% set org = package.organization.title if package.organization and package.organization.title else package.organization.name if package.organization and package.organization.name else '' %}
+{% set modified = h.render_datetime(package.metadata_modified) if package.metadata_modified else '' %}
+{% set pkg_url = h.url_for('%s.read' % package.type, id=package.name) %}
+
+<li class="{{ item_class or 'dataset-item customtheme-dataset-item' }}">
+  <article class="customtheme-dataset-card">
+    <header class="customtheme-dataset-head">
+      <div class="customtheme-dataset-meta">
+        {% if org %}
+          <span class="customtheme-meta-pill">{{ org }}</span>
+        {% endif %}
+        {% if modified %}
+          <span class="customtheme-meta-muted">Updated {{ modified }}</span>
+        {% endif %}
+      </div>
+      <h2 class="dataset-heading customtheme-dataset-title">
+        <a href="{{ pkg_url }}" title="{{ title }}">{{ title|truncate(90) }}</a>
+      </h2>
+    </header>
+
+    <div class="customtheme-dataset-body">
+      {% if notes %}
+        <p>{{ notes|urlize }}</p>
+      {% else %}
+        <p class="empty">{{ h.humanize_entity_type('package', package.type, 'no description') or _("There is no description for this dataset") }}</p>
+      {% endif %}
+    </div>
+
+    <footer class="customtheme-dataset-foot">
+      {% if package.resources and not hide_resources %}
+        <ul class="dataset-resources list-unstyled customtheme-format-list">
+          {% for resource in h.dict_list_reduce(package.resources, 'format') %}
+            <li><span class="customtheme-format-pill" data-format="{{ resource.lower() }}">{{ resource }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <a class="btn btn-primary customtheme-open-dataset" href="{{ pkg_url }}">
+        Open Dataset
+      </a>
+    </footer>
+  </article>
+</li>

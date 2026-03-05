@@ -1,0 +1,63 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ h.humanize_entity_type('organization', group_type, 'page title') or _('Organizations') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for h.humanize_entity_type('organization', group_type, 'breadcrumb') or _('Organizations'), named_route=group_type ~ '.index' %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block primary_content_inner %}
+  <section class="module customtheme-directory-shell">
+    <div class="module-content customtheme-directory-intro">
+      <p class="customtheme-kicker">Publishing Network</p>
+      <h1>{{ _('Transport Data Publishing Departments') }}</h1>
+      <p>{{ _('Browse ministry units and agencies publishing accidents, infractions, and mobility safety datasets.') }}</p>
+    </div>
+
+    <div class="module-content customtheme-directory-search">
+      {% if h.check_access('organization_create') %}
+        <div class="page_primary_action customtheme-catalog-action">
+          {% link_for _('Add Organization'), named_route=group_type ~ '.new', class_='btn btn-primary', icon='plus-square' %}
+        </div>
+      {% endif %}
+
+      {% snippet 'snippets/search_form.html',
+        form_id='organization-search-form',
+        type=group_type,
+        query=q,
+        sorting_selected=sort_by_selected,
+        count=page.item_count,
+        placeholder=h.humanize_entity_type('organization', group_type, 'search placeholder') or _('Search organizations...'),
+        show_empty=request.args,
+        no_bottom_border=true if page.items,
+        sorting=[(_('Name Ascending'), 'title asc'), (_('Name Descending'), 'title desc')] %}
+    </div>
+
+    <div class="module-content customtheme-directory-results">
+      {% if page.items or request.args %}
+        {% if page.items %}
+          {% snippet "organization/snippets/organization_list.html", organizations=page.items %}
+        {% endif %}
+      {% else %}
+        <p class="empty">
+          {{ _('There are currently no organizations for this site') }}.
+          {% if h.check_access('organization_create') %}
+            {% link_for _('How about creating one?'), named_route=group_type ~ '.new' %}.
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </section>
+
+  <div class="customtheme-pagination-wrap">
+    {{ page.pager(q=q or '', sort=sort_by_selected or '') }}
+  </div>
+{% endblock %}
+
+{% block secondary_content %}
+  <aside class="module module-narrow customtheme-filter-shell">
+    {% snippet "organization/snippets/helper.html", group_type=group_type %}
+  </aside>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "user/read_base.html" %}
+
+{% block page_primary_action %}
+  {% if h.check_access('package_create') and user.datasets %}
+    <div class="customtheme-catalog-action">
+      {% snippet 'snippets/add_dataset.html' %}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  <section class="module customtheme-directory-shell">
+    <div class="module-content customtheme-directory-intro">
+      <p class="customtheme-kicker">User Profile</p>
+      <h1>{{ user.display_name }}</h1>
+      <p>{{ _('Published datasets by this account.') }}</p>
+    </div>
+    <div class="module-content customtheme-directory-results">
+      {% if user.datasets %}
+        {% snippet 'snippets/package_list.html', packages=user.datasets %}
+      {% else %}
+        {% if is_myself %}
+          <p class="empty">
+            {{ _('You haven\'t created any datasets.') }}
+            {% if h.check_access('package_create') %}
+              {% link_for _('Create one now?'), named_route='dataset.new' %}
+            {% endif %}
+          </p>
+        {% else %}
+          <p class="empty">{{ _('User hasn\'t created any datasets.') }}</p>
+        {% endif %}
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

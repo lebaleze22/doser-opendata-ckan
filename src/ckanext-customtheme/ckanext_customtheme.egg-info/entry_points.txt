@@ -1,0 +1,2 @@
+[ckan.plugins]
+customtheme = ckanext.customtheme.plugin:CustomThemePlugin

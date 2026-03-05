@@ -1,0 +1,28 @@
+{% ckan_extends %}
+
+{% block package_description %}
+  <section class="customtheme-dataset-hero">
+    <div class="customtheme-dataset-hero-head">
+      {% if pkg.private %}
+        <span class="dataset-private badge badge-inverse pull-right">
+          <i class="fa fa-lock"></i> {{ _('Private') }}
+        </span>
+      {% endif %}
+      <h1>{{ h.dataset_display_name(pkg) }}</h1>
+      <div class="customtheme-dataset-hero-meta">
+        {% if pkg.organization and pkg.organization.title %}
+          <span class="customtheme-meta-pill">{{ pkg.organization.title }}</span>
+        {% endif %}
+        {% if pkg.metadata_modified %}
+          <span class="customtheme-meta-muted">{{ _('Updated') }} {{ h.render_datetime(pkg.metadata_modified) }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if pkg.notes %}
+      <div class="notes embedded-content customtheme-dataset-hero-notes">
+        {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

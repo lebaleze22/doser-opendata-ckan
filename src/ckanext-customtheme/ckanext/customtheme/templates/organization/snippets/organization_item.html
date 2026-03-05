@@ -1,0 +1,36 @@
+{% set url = h.url_for(organization.type ~ '.read', id=organization.name) %}
+
+<li class="media-item customtheme-directory-item">
+  <article class="customtheme-directory-card">
+    <div class="customtheme-directory-card-top">
+      <img src="{{ organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') }}"
+           alt="{{ organization.display_name }}"
+           class="img-fluid customtheme-directory-image">
+      <div class="customtheme-directory-meta">
+        <span class="customtheme-meta-pill">{{ _('Organization') }}</span>
+        {% if organization.package_count %}
+          <span class="customtheme-meta-muted">{{ ungettext('{num} Dataset', '{num} Datasets', organization.package_count).format(num=organization.package_count) }}</span>
+        {% else %}
+          <span class="customtheme-meta-muted">{{ _('0 Datasets') }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="customtheme-directory-title">{{ organization.display_name }}</h2>
+
+    {% if organization.description %}
+      <p class="customtheme-directory-text">{{ h.markdown_extract(organization.description, extract_length=120) }}</p>
+    {% endif %}
+
+    <div class="customtheme-directory-foot">
+      {% if 'member_count' in organization %}
+        <small class="customtheme-meta-muted">{{ ungettext('{num} Member', '{num} Members', organization.member_count).format(num=organization.member_count) if organization.member_count else _('0 Members') }}</small>
+      {% endif %}
+      <a href="{{ url }}" class="btn btn-primary customtheme-open-dataset">{{ _('Open') }}</a>
+    </div>
+  </article>
+</li>
+
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}

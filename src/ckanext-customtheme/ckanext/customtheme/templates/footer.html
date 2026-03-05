@@ -1,0 +1,29 @@
+{% ckan_extends %}
+
+{% block footer_content %}
+  <div class="customtheme-footer-grid">
+    <section>
+      <h3>About This Platform</h3>
+      <p>
+        Official open data platform of the Ministry of Transport focused on
+        accidents, infractions, and road safety intelligence.
+      </p>
+    </section>
+    <section>
+      <h3>Explore Data</h3>
+      <ul class="list-unstyled">
+        <li><a href="{{ h.url_for('dataset.search') }}">Accident and Infraction Datasets</a></li>
+        <li><a href="{{ h.url_for('organization.index') }}">Publishing Departments</a></li>
+        <li><a href="{{ h.url_for('group.index') }}">Safety Themes</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Platform</h3>
+      <ul class="list-unstyled">
+        <li><a href="{{ h.url_for('home.about') }}">About</a></li>
+        <li><a href="https://docs.ckan.org/en/{{ g.ckan_doc_version }}/api/">API Docs</a></li>
+        <li><a href="https://www.ckan.org/">Powered by CKAN</a></li>
+      </ul>
+    </section>
+  </div>
+{% endblock %}

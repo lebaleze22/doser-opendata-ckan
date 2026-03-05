@@ -1,0 +1,37 @@
+{% set type = group.type or 'group' %}
+{% set url = h.url_for(type ~ '.read', id=group.name) %}
+
+<li class="media-item customtheme-directory-item">
+  <article class="customtheme-directory-card">
+    <div class="customtheme-directory-card-top">
+      <img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}"
+           alt="{{ group.display_name }}"
+           class="img-fluid customtheme-directory-image">
+      <div class="customtheme-directory-meta">
+        <span class="customtheme-meta-pill">{{ _('Topic') }}</span>
+        {% if group.package_count %}
+          <span class="customtheme-meta-muted">{{ ungettext('{num} Dataset', '{num} Datasets', group.package_count).format(num=group.package_count) }}</span>
+        {% else %}
+          <span class="customtheme-meta-muted">{{ _('0 Datasets') }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="customtheme-directory-title">{{ group.display_name }}</h2>
+
+    {% if group.description %}
+      <p class="customtheme-directory-text">{{ h.markdown_extract(group.description, extract_length=120) }}</p>
+    {% endif %}
+
+    <div class="customtheme-directory-foot">
+      {% if 'member_count' in group %}
+        <small class="customtheme-meta-muted">{{ ungettext('{num} Member', '{num} Members', group.member_count).format(num=group.member_count) if group.member_count else _('0 Members') }}</small>
+      {% endif %}
+      <a href="{{ url }}" class="btn btn-primary customtheme-open-dataset">{{ _('Open') }}</a>
+    </div>
+  </article>
+</li>
+
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}

@@ -1,0 +1,33 @@
+{% extends "user/read_base.html" %}
+
+{% set user = user_dict %}
+{% set orgs_available = h.organizations_available(permission='manage_group',
+  include_dataset_count=True,
+  include_member_count=True,
+  user=user['id'])
+%}
+
+{% block primary_content_inner %}
+  <section class="module customtheme-directory-shell">
+    <div class="module-content customtheme-directory-intro">
+      <p class="customtheme-kicker">User Memberships</p>
+      <h1>{{ _('Organizations') }}</h1>
+      <p>{{ _('Organizations where this user is a member.') }}</p>
+    </div>
+    <div class="module-content customtheme-directory-results">
+      {% if orgs_available %}
+        <div class="wide">
+          {% snippet "organization/snippets/organization_list.html", organizations=orgs_available, show_capacity=True %}
+        </div>
+      {% else %}
+        <p class="empty">
+          {% if is_myself %}
+            {{ _('You are not a member of any organizations.') }}
+          {% else %}
+            {{ _('User isn\'t a member of any organizations.') }}
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

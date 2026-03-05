@@ -1,0 +1,35 @@
+{% ckan_extends %}
+
+{% block header_wrapper %}
+  <div class="customtheme-global-banner">
+    <div class="container">
+      <span class="customtheme-status-dot" aria-hidden="true"></span>
+      <strong>Ministry of Transport Data Portal</strong>
+      <span>Official statistics on road accidents, infractions, and transport safety</span>
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}
+
+{% block header_logo %}
+  <div class="customtheme-brand-wrap">
+    <a class="customtheme-brand" href="{{ h.url_for('home.index') }}">
+      <span class="customtheme-brand-title">Transport Safety Open Data</span>
+      <span class="customtheme-brand-subtitle">Accidents and infractions intelligence hub</span>
+    </a>
+  </div>
+{% endblock %}
+
+{% block header_site_search %}
+  <form class="d-flex site-search customtheme-site-search" action="{% url_for dataset_type ~ '.search' %}" method="get">
+    <label class="d-none" for="field-sitewide-search">
+      {{ h.humanize_entity_type('package', dataset_type, 'search_placeholder') or _('Search datasets...') }}
+    </label>
+    <input id="field-sitewide-search" class="form-control me-2" type="text" name="q"
+      placeholder="{{ _('Search datasets, tags, or publishers') }}"
+      aria-label="{{ h.humanize_entity_type('package', dataset_type, 'search_placeholder') or _('Search datasets...') }}"/>
+    <button class="btn btn-primary customtheme-search-btn" type="submit" aria-label="{{ _('Submit') }}">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+{% endblock %}

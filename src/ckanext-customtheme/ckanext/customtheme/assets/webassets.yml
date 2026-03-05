@@ -1,0 +1,4 @@
+customtheme-css:
+  output: ckanext-customtheme/%(version)s_customtheme.css
+  contents:
+    - customtheme.css

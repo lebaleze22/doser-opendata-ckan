@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+  <header class="customtheme-form-page-header customtheme-form-page-header-compact">
+    <p class="customtheme-kicker">Metadata Editor</p>
+    <h1>{{ _('Update Dataset Metadata') }}</h1>
+    <p>{{ _('Refine title, description, tags, and other fields before publishing updates.') }}</p>
+  </header>
+  {{ super() }}
+{% endblock %}

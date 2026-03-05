@@ -1,0 +1,85 @@
+{% ckan_extends %}
+
+{% block pre_primary %}
+  <div class="customtheme-resource-shell">
+    {{ super() }}
+  </div>
+{% endblock %}
+
+{% block resource_read_title %}
+  <div class="customtheme-resource-headline">
+    <span class="customtheme-meta-pill">{{ _('Resource') }}</span>
+    {% if res.format %}
+      <span class="customtheme-meta-pill">{{ res.format }}</span>
+    {% endif %}
+    <h1 class="page-heading" title="{{ h.resource_display_name(res) }}">{{ h.resource_display_name(res) | truncate(70) }}</h1>
+    <p class="customtheme-resource-subtitle">
+      {{ _('From dataset:') }}
+      <a href="{{ h.url_for(package.type ~ '.read', id=package.name) }}">{{ h.dataset_display_name(package) }}</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block resource_read_url %}
+  {% if res.url and h.is_url(res.url) %}
+    <p class="text-muted ellipsis customtheme-resource-url">
+      {{ _('Source URL:') }}
+      <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a>
+    </p>
+  {% elif res.url %}
+    <p class="text-muted break-word customtheme-resource-url">{{ _('Source URL:') }} {{ res.url }}</p>
+  {% endif %}
+{% endblock %}
+
+{% block resource_additional_information_inner %}
+  <div class="module-content customtheme-resource-table-wrap">
+    <h2>{{ _('Additional Information') }}</h2>
+    <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+      <thead>
+        <tr>
+          <th scope="col">{{ _('Field') }}</th>
+          <th scope="col">{{ _('Value') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{ _('Data last updated') }}</th>
+          <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _('Metadata last updated') }}</th>
+          <td>{{ h.render_datetime(res.metadata_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _('Created') }}</th>
+          <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _('Format') }}</th>
+          <td>{{ res.format or res.mimetype_inner or res.mimetype or _('unknown') }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _('License') }}</th>
+          <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+        </tr>
+        {% for key, value in h.format_resource_items(res.items()) %}
+          {% if key not in ('created', 'metadata modified', 'last modified', 'format') %}
+            <tr class="toggle-more"><th scope="row">{{ key | capitalize }}</th><td>{{ value }}</td></tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block resources_list %}
+  <section class="customtheme-resource-sidepanel">
+    {% snippet "package/snippets/resources.html", pkg=pkg, active=res.id, action='read' %}
+  </section>
+{% endblock %}
+
+{% block resource_license %}
+  <section class="customtheme-resource-sidepanel customtheme-resource-social">
+    {% snippet "snippets/social.html" %}
+  </section>
+{% endblock %}

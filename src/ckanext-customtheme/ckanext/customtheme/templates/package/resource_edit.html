@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+  <header class="customtheme-form-page-header customtheme-form-page-header-compact">
+    <p class="customtheme-kicker">Resource Editor</p>
+    <h1>{{ _('Edit Resource Details') }}</h1>
+    <p>{{ _('Adjust file metadata, format details, or links for this resource.') }}</p>
+  </header>
+  {{ super() }}
+{% endblock %}

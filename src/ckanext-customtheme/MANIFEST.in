@@ -1,0 +1,3 @@
+recursive-include ckanext/customtheme/templates *
+recursive-include ckanext/customtheme/public *
+recursive-include ckanext/customtheme/assets *

@@ -1,0 +1,21 @@
+{% extends "organization/read_base.html" %}
+
+{% block subtitle %}{{ _('About') }} {{ g.template_title_delimiter }} {{ super() }}{% endblock %}
+
+{% block primary_content_inner %}
+  <article class="module customtheme-about-shell">
+    <div class="module-content customtheme-about-hero">
+      <p class="customtheme-kicker">Organization Profile</p>
+      <h1 class="page-heading">{{ group_dict.display_name }}</h1>
+      <p>{{ _('Department overview, mandate, and publication scope.') }}</p>
+    </div>
+    <div class="module-content customtheme-about-content">
+      {% if group_dict.description %}
+        {{ h.render_markdown(group_dict.description) }}
+      {% else %}
+        <p class="empty">{{ _('No description has been provided yet.') }}</p>
+      {% endif %}
+      {% snippet 'snippets/additional_info.html', extras=h.sorted_extras(group_dict.extras) %}
+    </div>
+  </article>
+{% endblock %}

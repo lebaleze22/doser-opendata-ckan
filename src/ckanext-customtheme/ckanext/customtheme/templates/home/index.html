@@ -1,0 +1,67 @@
+﻿{% ckan_extends %}
+
+{% block promoted %}
+  <section class="customtheme-hero-panel">
+    <div class="customtheme-kicker">Ministry of Transport</div>
+    <h1 class="customtheme-title">Track Accidents, Infractions, and Road Safety Trends</h1>
+    <p class="customtheme-lead">
+      Access official transport datasets, monitor enforcement outcomes, and build
+      evidence-based safety dashboards for decision makers.
+    </p>
+
+    <div class="customtheme-actions">
+      <a class="btn btn-primary customtheme-cta" href="{{ h.url_for('dataset.search') }}">Browse Safety Datasets</a>
+      <a class="btn btn-default customtheme-cta-alt" href="{{ h.url_for('organization.index') }}">View Publishing Units</a>
+    </div>
+
+    <ul class="customtheme-metrics list-unstyled">
+      <li><span>Coverage</span><strong>National and Regional Data</strong></li>
+      <li><span>Domains</span><strong>Accidents, Infractions, Enforcement</strong></li>
+      <li><span>Use</span><strong>Planning, Monitoring, Prevention</strong></li>
+    </ul>
+  </section>
+{% endblock %}
+
+{% block featured_group %}
+  <section class="customtheme-section-card">
+    <header>
+      <h3>Safety Themes</h3>
+      <p>Explore datasets by accidents, traffic violations, and risk factors.</p>
+    </header>
+    {% snippet 'home/snippets/featured_group.html' %}
+  </section>
+{% endblock %}
+
+{% block featured_organization %}
+  <section class="customtheme-section-card">
+    <header>
+      <h3>Publishing Departments</h3>
+      <p>Find transport agencies and units publishing official records.</p>
+    </header>
+    {% snippet 'home/snippets/featured_organization.html' %}
+  </section>
+{% endblock %}
+
+{% block secondary_content %}
+  {{ super() }}
+  <section class="customtheme-section-card customtheme-home-gallery">
+    <header>
+      <h3>Transport Safety In Focus</h3>
+      <p>Visual context from roads, traffic management, and transport infrastructure.</p>
+    </header>
+    <div class="customtheme-gallery-grid">
+      <figure class="customtheme-gallery-item">
+        <img src="https://chatgpt.com/backend-api/estuary/content?id=file_00000000d4fc71f5aa15bfc211283784&ts=492408&p=fs&cid=1&sig=5d55749633a2decab417f91139d607936677a5d2f1cd25107c320daf05a74061&v=0" alt="Transport ministry visual">
+        <figcaption>Ministry Visual Context</figcaption>
+      </figure>
+      <figure class="customtheme-gallery-item">
+        <img src="https://besafe.cm/wp-content/uploads/2023/09/logo-partenaire-client-besafe-05.png" alt="BeSafe partner logo">
+        <figcaption>Transport Safety Partners</figcaption>
+      </figure>
+      <figure class="customtheme-gallery-item">
+        <img src="https://ssdtmint.cm/en/pic/MINT%20Cover%20new-min.jpg" alt="Ministry of transport cover image">
+        <figcaption>Road Infrastructure and Governance</figcaption>
+      </figure>
+    </div>
+  </section>
+{% endblock %}
