@@ -1,14 +1,22 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
-if [[ "${CKAN__PLUGINS:-}" == *"datapusher"* ]]; then
-  # Datapusher settings have been configured in the .env file.
-  # Set API token if necessary.
-  if [[ -z "${CKAN__DATAPUSHER__API_TOKEN:-}" ]]; then
+case "${CKAN__PLUGINS:-}" in
+  *datapusher*)
+  # Keep ckan.datapusher.api_token synchronized with runtime env to avoid
+  # leaving the default placeholder value ("xxx"), which causes 403 errors
+  # when DataPusher writes to the DataStore API.
+  if [ -n "${CKAN__DATAPUSHER__API_TOKEN:-}" ]; then
+    ckan config-tool "$CKAN_INI" "ckan.datapusher.api_token=${CKAN__DATAPUSHER__API_TOKEN}"
+  else
     echo "Set up ckan.datapusher.api_token in the CKAN config file"
-    TOKEN="$(ckan -c "$CKAN_INI" user token add ckan_admin datapusher | tail -n 1 | tr -d '\t\r')"
-    ckan config-tool "$CKAN_INI" "ckan.datapusher.api_token=$TOKEN"
+    TOKEN="$(ckan -c "$CKAN_INI" user token add ckan_admin datapusher 2>/dev/null | grep -Eo '[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' | head -n 1)"
+    if [ -n "$TOKEN" ]; then
+      ckan config-tool "$CKAN_INI" "ckan.datapusher.api_token=$TOKEN"
+    fi
   fi
-else
+  ;;
+  *)
   echo "Not configuring DataPusher"
-fi
+  ;;
+esac

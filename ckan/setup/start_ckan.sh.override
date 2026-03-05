@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# Add ckan.datapusher.api_token to the CKAN config file (updated with corrected value later)
-ckan config-tool $CKAN_INI ckan.datapusher.api_token=xxx
+# Ensure ckan.datapusher.api_token is never left as the default placeholder.
+if [ -n "${CKAN__DATAPUSHER__API_TOKEN:-}" ]; then
+    ckan config-tool $CKAN_INI "ckan.datapusher.api_token=${CKAN__DATAPUSHER__API_TOKEN}"
+else
+    ckan config-tool $CKAN_INI ckan.datapusher.api_token=xxx
+fi
 
 # Set up the Secret key used by Beaker and Flask
 # This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
@@ -19,7 +23,14 @@ fi
 sudo -u ckan -EH python3 prerun.py
 
 echo "Set up ckan.datapusher.api_token in the CKAN config file"
-ckan config-tool $CKAN_INI "ckan.datapusher.api_token=$(ckan -c $CKAN_INI user token add ckan_admin datapusher | tail -n 1 | tr -d '\t')"
+if [ -n "${CKAN__DATAPUSHER__API_TOKEN:-}" ]; then
+    ckan config-tool $CKAN_INI "ckan.datapusher.api_token=${CKAN__DATAPUSHER__API_TOKEN}"
+else
+    TOKEN=$(ckan -c "$CKAN_INI" user token add ckan_admin datapusher 2>/dev/null | grep -Eo '[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' | head -n 1)
+    if [ -n "$TOKEN" ]; then
+        ckan config-tool $CKAN_INI "ckan.datapusher.api_token=$TOKEN"
+    fi
+fi
 
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
